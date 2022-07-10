@@ -10,7 +10,7 @@ import com.spacegame.Main
 fun main() {
     Lwjgl3Application(Main(), Lwjgl3ApplicationConfiguration().apply {
         setTitle("space-game")
-        setWindowedMode(640, 480)
+        setWindowedMode(1600, 900)
         setWindowIcon(*(arrayOf(128, 64, 32, 16).map { "libgdx$it.png" }.toTypedArray()))
     })
 }
