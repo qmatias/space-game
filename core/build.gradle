@@ -25,6 +25,7 @@ dependencies {
 	api "net.onedaybeard.artemis:artemis-odb:$artemisOdbVersion"
 	api "net.mostlyoriginal.artemis-odb:contrib-core:$artemisOdbContribVersion"
 	api "net.mostlyoriginal.artemis-odb:contrib-eventbus:$artemisOdbContribVersion"
+	api "net.mostlyoriginal.artemis-odb:contrib-plugin-singleton:$artemisOdbContribVersion"
 	api "org.jetbrains.kotlin:kotlin-stdlib:$kotlinVersion"
 	api "org.jetbrains.kotlinx:kotlinx-coroutines-core:$kotlinxCoroutinesVersion"
 }

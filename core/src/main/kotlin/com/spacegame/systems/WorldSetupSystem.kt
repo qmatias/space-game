@@ -4,11 +4,15 @@ import com.artemis.BaseSystem
 import com.artemis.annotations.Wire
 import com.badlogic.gdx.Gdx
 import com.spacegame.components.Asteroid
+import com.spacegame.components.Camera
 import com.spacegame.components.Position
 import net.dermetfan.gdx.assets.AnnotationAssetManager
 import kotlin.random.Random
 
 class WorldSetupSystem : BaseSystem() {
+
+    lateinit var camera: Camera
+
     override fun initialize() {
         println("initializing world")
 
@@ -20,8 +24,12 @@ class WorldSetupSystem : BaseSystem() {
             asteroid.size = Random.nextInt(40, 170).toFloat()
 
             val position = world.edit(entity).create(Position::class.java)
-            position.x = Random.nextInt(0, Gdx.graphics.width).toFloat()
-            position.y = Random.nextInt(0, Gdx.graphics.height).toFloat()
+            val left = camera.camera.position.x - camera.camera.viewportWidth / 2
+            val right = camera.camera.position.x + camera.camera.viewportWidth / 2
+            val bottom = camera.camera.position.y - camera.camera.viewportHeight / 2
+            val top = camera.camera.position.y + camera.camera.viewportHeight / 2
+            position.x = Random.nextInt(left.toInt(), right.toInt()).toFloat()
+            position.y = Random.nextInt(bottom.toInt(), top.toInt()).toFloat()
         }
     }
 

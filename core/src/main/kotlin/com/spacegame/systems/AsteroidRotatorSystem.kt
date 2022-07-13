@@ -9,15 +9,12 @@ import com.artemis.systems.IteratingSystem
 import com.spacegame.components.Asteroid
 import com.spacegame.components.Rotation
 
-@All(Asteroid::class)
-class AsteroidRotatorSystem : IntervalIteratingSystem(Aspect.all(), 1 / 20f) {
+class AsteroidRotatorSystem : IntervalIteratingSystem(Aspect.all(Asteroid::class.java), 1 / 20f) {
     lateinit var asteroidMapper: ComponentMapper<Asteroid>
     lateinit var rotationMapper: ComponentMapper<Rotation>
     override fun process(e: Int) {
         val asteroid: Asteroid = asteroidMapper.get(e)
         val rotation: Rotation = rotationMapper.create(e)
-
-        println("rotating ${rotation.rotation} ${asteroid.rotationSpeed} ${world.delta}")
 
         rotation.rotation += asteroid.rotationSpeed * world.getDelta()
     }
