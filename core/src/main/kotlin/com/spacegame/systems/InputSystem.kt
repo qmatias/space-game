@@ -2,46 +2,57 @@ package com.spacegame.systems
 
 import com.artemis.BaseSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.InputAdapter
-import com.badlogic.gdx.InputMultiplexer
-import com.badlogic.gdx.input.GestureDetector.GestureAdapter
-import com.spacegame.components.Camera
+import com.badlogic.gdx.InputProcessor
+import com.spacegame.events.*
+import net.mostlyoriginal.api.event.common.EventSystem
 
 
-class InputSystem : BaseSystem() {
-    lateinit var camera: Camera
-    var currentZoom = 1f
+class InputSystem : BaseSystem(), InputProcessor {
+    private lateinit var eventSystem: EventSystem
+    override fun processSystem() {}
 
-    fun registerInputProcessor() {
-        Gdx.input.inputProcessor = InputMultiplexer(
-            MobileGestureHandler(),
-            DesktopGestureHandler()
-        )
+    override fun initialize() {
+        Gdx.input.inputProcessor = this
     }
 
-    override fun processSystem() { }
-
-    inner class MobileGestureHandler() : GestureAdapter() {
-        override fun pan(x: Float, y: Float, deltaX: Float, deltaY: Float): Boolean {
-            camera.camera.translate(-deltaX * currentZoom, deltaY * currentZoom)
-            camera.camera.update()
-            return false
-        }
-
-        override fun zoom(initialDistance: Float, distance: Float): Boolean {
-            camera.camera.zoom = initialDistance / distance * currentZoom
-            camera.camera.update()
-            return true
-        }
-
-        override fun panStop(x: Float, y: Float, pointer: Int, button: Int): Boolean {
-            Gdx.app.log("INFO", "panStop")
-            currentZoom = camera.camera.zoom
-            return false
-        }
+    override fun keyDown(keycode: Int): Boolean {
+        eventSystem.dispatch(KeyDownEvent(keycode))
+        return false
     }
 
-    inner class DesktopGestureHandler() : InputAdapter() {
+    override fun keyUp(keycode: Int): Boolean {
+        eventSystem.dispatch(KeyUpEvent(keycode))
+        return false
+    }
 
+    override fun keyTyped(character: Char): Boolean {
+        eventSystem.dispatch(KeyTypedEvent(character))
+        return false
+    }
+
+    override fun touchDown(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        eventSystem.dispatch(TouchDownEvent(screenX, screenY, pointer, button))
+        return false
+    }
+
+
+    override fun touchUp(screenX: Int, screenY: Int, pointer: Int, button: Int): Boolean {
+        eventSystem.dispatch(TouchUpEvent(screenX, screenY, pointer, button))
+        return false
+    }
+
+    override fun touchDragged(screenX: Int, screenY: Int, pointer: Int): Boolean {
+        eventSystem.dispatch(TouchDraggedEvent(screenX, screenY, pointer))
+        return false
+    }
+
+    override fun mouseMoved(screenX: Int, screenY: Int): Boolean {
+        eventSystem.dispatch(MouseMovedEvent(screenX, screenY))
+        return false
+    }
+
+    override fun scrolled(amountX: Float, amountY: Float): Boolean {
+        eventSystem.dispatch(ScrollEvent(amountX, amountY))
+        return false
     }
 }

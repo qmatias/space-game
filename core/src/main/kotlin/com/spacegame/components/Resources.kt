@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera
 import net.mostlyoriginal.api.Singleton
 
 @Singleton
-class Camera(
-    var camera: OrthographicCamera = OrthographicCamera(1600f, 900f)
+class Resources(
+    var minerals: Int = 150,
+    var ships: Int = 0
 ) : Component()
