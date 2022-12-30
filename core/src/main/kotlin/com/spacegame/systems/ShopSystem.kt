@@ -66,19 +66,23 @@ class ShopSystem : BaseSystem() {
     }
 
     private fun onPurchaseMiner() {
-        val entity = world.create()
-        world.edit(entity).create(BeingPlaced::class.java)
-        world.edit(entity).create(Spinning::class.java)
-        world.edit(entity).create(Size::class.java)
-        world.edit(entity).create(Miner::class.java)
+        world.edit(world.create())
+            .add(BeingPlaced())
+            .add(Size())
+            .add(Miner())
+            .add(Range(75f))
+            .add(Texture(Assets.MINER))
     }
 
     private fun onPurchaseSolarStation() {
-        val entity = world.create()
-        world.edit(entity).create(BeingPlaced::class.java)
-        world.edit(entity).create(Spinning::class.java)
-        world.edit(entity).create(Size::class.java)
-        world.edit(entity).create(SolarStation::class.java)
+        world.edit(world.create())
+            .add(BeingPlaced())
+            .add(Size())
+            .add(SolarStation())
+            .add(Generator())
+            .add(Battery())
+            .add(Range(200f))
+            .add(Texture(Assets.SOLAR_STATION))
     }
 
     private fun notEnoughFunds(structure: Structure) {

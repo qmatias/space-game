@@ -4,4 +4,6 @@ import com.artemis.Component
 import com.artemis.annotations.EntityId
 import com.artemis.utils.IntBag
 
-class SolarStation : Component()
+class Generator(
+    var energyPerSecond: Int = 1
+) : Component()

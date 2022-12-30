@@ -5,5 +5,5 @@ import com.artemis.annotations.EntityId
 import com.artemis.utils.IntBag
 
 class Miner(
-    val range: Float = 300f,
+    var mineralsMined: Int = 0
 ) : Component()

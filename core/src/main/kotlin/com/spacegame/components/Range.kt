@@ -4,4 +4,4 @@ import com.artemis.Component
 import com.artemis.annotations.EntityId
 import com.artemis.utils.IntBag
 
-class SolarStation : Component()
+class Range(var range: Float = 150f) : Component()

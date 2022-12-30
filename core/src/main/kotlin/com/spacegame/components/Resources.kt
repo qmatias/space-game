@@ -7,5 +7,5 @@ import net.mostlyoriginal.api.Singleton
 @Singleton
 class Resources(
     var minerals: Int = 150,
-    var ships: Int = 0
+    var ships: Int = 0,
 ) : Component()

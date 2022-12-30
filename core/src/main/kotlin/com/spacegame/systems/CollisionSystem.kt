@@ -7,6 +7,7 @@ import com.artemis.annotations.All
 import com.badlogic.gdx.math.Vector2
 import com.spacegame.components.Collideable
 import com.spacegame.components.Position
+import com.spacegame.components.Range
 import com.spacegame.components.Size
 import com.spacegame.util.getNullable
 import com.spacegame.util.iterator
@@ -39,6 +40,7 @@ class CircularBoundingBox(val x: Float, val y: Float, val radius: Float) : Bound
 class CollisionSystem : BaseEntitySystem() {
     private lateinit var positionMapper: ComponentMapper<Position>
     private lateinit var sizeMapper: ComponentMapper<Size>
+    private lateinit var rangeMapper: ComponentMapper<Range>
 
     override fun processSystem() {}
 
@@ -60,7 +62,13 @@ class CollisionSystem : BaseEntitySystem() {
     fun getEntityBB(e: Int): BoundingBox {
         val position = positionMapper.getNullable(e) ?: return NullBoundingBox()
         val size = sizeMapper.getNullable(e) ?: return NullBoundingBox()
-        return getCircularBB(position, size)
+        return CircularBoundingBox(position.x, position.y, size.size / 2)
+    }
+
+    fun getRangeBB(e: Int): BoundingBox {
+        val range = rangeMapper.getNullable(e)?.range ?: return NullBoundingBox()
+        val position = positionMapper.getNullable(e) ?: return NullBoundingBox()
+        return CircularBoundingBox(position.x, position.y, range)
     }
 }
 
@@ -69,6 +77,3 @@ fun pointCollidesCircle(px: Float, py: Float, x: Float, y: Float, radius: Float)
 
 fun circleCollidesCircle(x1: Float, y1: Float, r1: Float, x2: Float, y2: Float, r2: Float) =
     Vector2(x1, y1).dst2(x2, y2) < (r1 + r2) * (r1 + r2)
-
-fun getCircularBB(position: Position, size: Size): BoundingBox =
-    CircularBoundingBox(position.x, position.y, size.size / 2)

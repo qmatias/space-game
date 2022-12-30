@@ -6,6 +6,7 @@ import com.badlogic.gdx.scenes.scene2d.InputEvent
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Dialog
 import com.badlogic.gdx.scenes.scene2d.ui.Image
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener
@@ -21,9 +22,10 @@ import ktx.actors.onClick
 import net.mostlyoriginal.api.event.common.EventSystem
 
 class ShopWindowSystem(
-    val iconPadding: Float = 20f,
-    val itemSize: Float = 100f,
-    private val tablePadding: Float = 10f
+    private val iconPadding: Float = 5f,
+    private val itemSize: Float = 130f,
+    private val buttonSpacing: Float = 10f,
+    private val tablePadding: Float = 15f
 ) : BaseSystem() {
     lateinit var window: Table
 
@@ -32,33 +34,33 @@ class ShopWindowSystem(
     @Wire
     lateinit var assetManager: Assets
 
-    @Wire
-    lateinit var stage: Stage
-
     override fun initialize() {
         val skin = assetManager.get(Assets.UI_SKIN)
 
         window = GameWindow("Shop", skin)
         val gallery = Table()
-        gallery.left().row().space(iconPadding).width(itemSize).height(itemSize)
+        gallery.row().width(itemSize).height(itemSize).expand()
 
         for (structure in Structure.values()) {
             val texture = assetManager.get(structure.icon)
             val image = Image(texture)
-            val container = Table()
+            val container = Table(skin)
             image.setScaling(Scaling.contain)
             image.onClick {
                 eventSystem.dispatch(PurchaseStructureEvent(structure))
             }
-            container.add(image).fill().expand()
+            container.add(image).fill().expand().pad(iconPadding)
+            container.setBackground("progress-bar-back")
             gallery.add(container)
         }
 
         gallery.skin = skin
-        gallery.setBackground("soldier")
-
-        window.add(gallery).fill().expand().pad(tablePadding)
-        window.setDebug(true, true)
+        val inner = Table()
+        inner.defaults().space(buttonSpacing)
+        inner.add(ImageButton(skin, "left"))
+        inner.add(gallery).fill().expand()
+        inner.add(ImageButton(skin, "right"))
+        window.add(inner).fill().expand().pad(tablePadding)
     }
 
     override fun processSystem() {}

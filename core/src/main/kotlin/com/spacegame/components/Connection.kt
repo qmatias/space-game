@@ -5,5 +5,5 @@ import com.artemis.annotations.EntityId
 import com.artemis.utils.IntBag
 
 class Connection(
-    @EntityId var entities: IntBag = IntBag()
+    @EntityId val entities: IntBag = IntBag()
 ) : Component()

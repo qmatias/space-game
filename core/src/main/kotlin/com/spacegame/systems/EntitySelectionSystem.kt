@@ -18,21 +18,19 @@ class EntitySelectionSystem : BaseEntitySystem() {
 
     override fun processSystem() {}
 
-    private fun clearSelection() {
+    @Subscribe(ignoreCancelledEvents = true)
+    fun onEntityClick(ev: EntityClickEvent) {
         for (e in entityIds) {
-            selectedMapper.remove(e)
+            if (e == ev.entity) {
+                selectedMapper.toggle(ev.entity)
+            } else {
+                selectedMapper.remove(e)
+            }
         }
     }
 
     @Subscribe(ignoreCancelledEvents = true)
-    fun onEntityClick(ev: EntityClickEvent) {
-        clearSelection()
-        if (ev.entity !in entityIds) return // only affect selectable entities
-        selectedMapper.add(ev.entity)
-    }
-
-    @Subscribe(ignoreCancelledEvents = true)
     fun onEntityClickMiss(_ev: EntityClickMissEvent) {
-        clearSelection()
+        entityIds.iterator().forEach(selectedMapper::remove)
     }
 }

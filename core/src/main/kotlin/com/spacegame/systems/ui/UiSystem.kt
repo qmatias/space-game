@@ -14,6 +14,7 @@ import net.mostlyoriginal.api.event.common.Subscribe
 fun WorldConfigurationBuilder.withUI(): WorldConfigurationBuilder {
     with(AsteroidInfoWindowSystemSystem())
     with(MinerInfoWindowSystemSystem())
+    with(SolarStationInfoWindowSystemSystem())
     with(MapWindowSystem())
     with(ShopWindowSystem())
     with(ResourcesWindowSystem())
@@ -32,6 +33,7 @@ class UiSystem(
     private lateinit var shopWindowSystem: ShopWindowSystem
     private lateinit var asteroidInfoWindowSystem: AsteroidInfoWindowSystemSystem
     private lateinit var minerInfoWindow: MinerInfoWindowSystemSystem
+    private lateinit var solarStationInfoWindow: SolarStationInfoWindowSystemSystem
     private lateinit var resourcesWindowSystem: ResourcesWindowSystem
 
     private lateinit var bottomBarCell: Cell<Actor>
@@ -47,7 +49,9 @@ class UiSystem(
     }
 
     private fun updateBottomBar() {
-        if (minerInfoWindow.active) {
+        if (solarStationInfoWindow.active) {
+            bottomBarCell.setActor(solarStationInfoWindow.window)
+        } else if (minerInfoWindow.active) {
             bottomBarCell.setActor(minerInfoWindow.window)
         } else if (asteroidInfoWindowSystem.active) {
             bottomBarCell.setActor(asteroidInfoWindowSystem.window)

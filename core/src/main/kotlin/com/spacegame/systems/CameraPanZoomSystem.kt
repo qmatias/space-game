@@ -15,22 +15,16 @@ class CameraPanZoomSystem(
 ) : BaseSystem() {
     private lateinit var camera: Camera
     private val lastTouch = Vector2()
-    private var activePointer = -1
 
     override fun processSystem() {}
 
-    @Subscribe(priority = 1000)
+    @Subscribe
     fun onTouchDown(e: TouchDownEvent) {
-        if (e.button != Input.Buttons.LEFT)
-            activePointer = e.pointer
-
         lastTouch.set(e.screenX.toFloat(), e.screenY.toFloat())
     }
 
     @Subscribe(ignoreCancelledEvents = true, priority = 100)
     fun onTouchDragged(e: TouchDraggedEvent) {
-        if (e.pointer != activePointer) return
-
         val movement = Vector2(e.screenX.toFloat(), e.screenY.toFloat())
             .sub(lastTouch)
             .scl(-1f, 1f)

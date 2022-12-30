@@ -1,6 +1,7 @@
 package com.spacegame.systems
 
 import com.artemis.BaseSystem
+import com.spacegame.Assets
 import com.spacegame.components.*
 import com.spacegame.util.*
 import kotlin.random.Random
@@ -19,14 +20,14 @@ class TestingWorldSetupSystem() : BaseSystem() {
         for (i in 0..10) {
             val entity: Int = world.create()
 
-            world.edit(entity).create(Selectable::class.java)
-            world.edit(entity).create(Collideable::class.java)
-
-            val rotation = world.edit(entity).create(Rotation::class.java)
-            rotation.rotation = Random.nextFloat(0f, 360f)
-
-            val spinning = world.edit(entity).create(Spinning::class.java)
-            spinning.rotationSpeed = Random.nextFloat(7f, 30f)
+            world.edit(entity)
+                .add(Selectable())
+                .add(Collideable())
+                .add(Rotation.random())
+                .add(Spinning.random())
+                .add(Asteroid())
+                .add(Active())
+                .add(Texture(Assets.ASTEROID))
 
             val position = world.edit(entity).create(Position::class.java)
             val size = world.edit(entity).create(Size::class.java)
@@ -36,12 +37,10 @@ class TestingWorldSetupSystem() : BaseSystem() {
                 position.x = Random.nextFloat(screenLeft, screenRight)
                 position.y = Random.nextFloat(screenBottom, screenTop)
 
-                bb = getCircularBB(position, size)
+                bb = CircularBoundingBox(position.x, position.y, size.size / 2)
             } while (others.any { bb.collides(it) })
 
             others.add(bb)
-
-            world.edit(entity).create(Asteroid::class.java)
         }
     }
 

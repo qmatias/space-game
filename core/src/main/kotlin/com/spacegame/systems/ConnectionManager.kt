@@ -38,21 +38,25 @@ class ConnectionManager : IteratingSystem() {
         }
     }
 
-    fun addConnection(from: Int, to: Int) {
+    fun add(from: Int, to: Int) {
         val connectionFrom = connectionMapper.create(from)
         val connectionTo = connectionMapper.create(to)
 
-        connectionFrom.entities.add(to)
-        connectionTo.entities.add(from)
+        if (!connectionFrom.entities.contains(to)) connectionFrom.entities.add(to)
+        if (!connectionTo.entities.contains(from)) connectionTo.entities.add(from)
     }
 
-    fun hasConnection(from: Int, to: Int): Boolean =
-        to in getConnections(from)
+    fun has(from: Int, to: Int): Boolean =
+        to in get(from)
 
-    fun getConnections(e: Int): List<Int> =
+    fun get(e: Int): List<Int> =
         connectionMapper.getNullable(e)?.entities?.toList() ?: listOf()
 
-    fun removeConnection(from: Int, to: Int) {
+    fun set(from: Int, to: Int, value: Boolean) {
+        if (value) add(from, to) else remove(from, to)
+    }
+
+    fun remove(from: Int, to: Int) {
         connectionMapper.getNullable(from)?.entities?.removeValue(to)
         connectionMapper.getNullable(to)?.entities?.removeValue(from)
     }

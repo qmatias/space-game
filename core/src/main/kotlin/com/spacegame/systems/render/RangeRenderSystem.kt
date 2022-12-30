@@ -10,22 +10,21 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.spacegame.components.*
 
 
-@All(Miner::class, Size::class, Position::class)
+@All(Range::class, Position::class)
 @One(ShowRange::class, Selected::class)
 class RangeRenderSystem(
     private val lineWidth: Float = 2f,
     private val color: Color = Color.WHITE
 ) : IteratingSystem() {
     private lateinit var positionMapper: ComponentMapper<Position>
-    private lateinit var minerMapper: ComponentMapper<Miner>
+    private lateinit var rangeMapper: ComponentMapper<Range>
 
     private val shapeRenderer = ShapeRenderer()
 
     private lateinit var camera: Camera
-
     override fun process(e: Int) {
         val position = positionMapper.get(e)
-        val range = minerMapper.get(e).range
+        val range = rangeMapper.get(e).range
         shapeRenderer.circle(position.x, position.y, range)
     }
 

@@ -16,6 +16,16 @@ eclipse.project {
 	natures 'org.robovm.eclipse.RoboVMNature'
 }
 
+buildscript {
+	repositories {
+		google()
+		mavenCentral()
+	}
+	dependencies {
+		classpath "com.mobidevelop.robovm:robovm-gradle-plugin:$robovmVersion"
+	}
+}
+
 dependencies {
 	implementation "com.badlogicgames.gdx:gdx-backend-robovm:$gdxVersion"
 	implementation "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-ios"
