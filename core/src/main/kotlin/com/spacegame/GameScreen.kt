@@ -14,7 +14,6 @@ import ktx.app.clearScreen
 import net.mostlyoriginal.api.SingletonPlugin
 import net.mostlyoriginal.api.event.common.EventSystem
 import net.mostlyoriginal.plugin.OperationsPlugin
-import kotlin.math.min
 
 const val MAX_DELTA = 1 / 15f
 
@@ -43,7 +42,7 @@ class GameScreen(assetManager: Assets) : KtxScreen {
             .with(MiningSystem())
             .withRender()
             .withUI()
-            .with(TestingWorldSetupSystem())
+            .with(ProcGenWorldSetupSystem())
             .build()
             .register(assetManager)
             .register(Stage())

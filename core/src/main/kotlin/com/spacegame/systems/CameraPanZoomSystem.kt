@@ -7,6 +7,7 @@ import com.spacegame.events.ScrollEvent
 import com.spacegame.events.TouchDownEvent
 import com.spacegame.events.TouchDraggedEvent
 import com.spacegame.components.Camera
+import com.spacegame.events.KeyTypedEvent
 import net.mostlyoriginal.api.event.common.Subscribe
 
 
@@ -15,6 +16,11 @@ class CameraPanZoomSystem(
 ) : BaseSystem() {
     private lateinit var camera: Camera
     private val lastTouch = Vector2()
+
+    override fun initialize() {
+        camera.camera.zoom = 0.5f
+        camera.camera.update()
+    }
 
     override fun processSystem() {}
 
@@ -43,6 +49,18 @@ class CameraPanZoomSystem(
         camera.camera.zoom *= 1 + e.amountY * zoomInterval
         camera.camera.update()
 
+        e.isCancelled = true
+    }
+
+    @Subscribe(ignoreCancelledEvents = true, priority = 100)
+    fun onKeyTyped(e: KeyTypedEvent) {
+        when (e.character) {
+            'r' -> camera.camera.zoom = 1f
+            '+' -> camera.camera.zoom -= 1
+            '-' -> camera.camera.zoom += 1
+            else -> return
+        }
+        camera.camera.update()
         e.isCancelled = true
     }
 }

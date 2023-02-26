@@ -4,9 +4,11 @@ import com.badlogic.gdx.assets.AssetDescriptor
 import com.badlogic.gdx.graphics.Texture
 
 enum class Structure(val icon: AssetDescriptor<Texture>, val price: Int) {
-    MINER(Assets.MINER, 50),
+    MINERAL_MINER(Assets.MINERAL_MINER, 50),
+    ENERGY_RELAY(Assets.ENERGY_RELAY, 10),
     SOLAR_STATION(Assets.SOLAR_STATION, 50),
-    SHIP_1(Assets.SHIP_1, 2000),
-    SHIP_2(Assets.SHIP_2, 2000),
-    SHIP_3(Assets.SHIP_3, 2000)
+    REPAIR_STATION(Assets.REPAIR_STATION, 200),
+    MISSILE_LAUNCHER(Assets.MISSILE_LAUNCHER, 400),
+    LASER_CANNON(Assets.LASER_CANNON, 400),
+    BATTERY(Assets.BATTERY, 100),
 }

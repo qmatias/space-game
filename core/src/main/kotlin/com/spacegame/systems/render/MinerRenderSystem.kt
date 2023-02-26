@@ -5,7 +5,6 @@ import com.artemis.annotations.All
 import com.artemis.annotations.Wire
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.graphics.g2d.Batch
-import com.badlogic.gdx.graphics.g2d.SpriteBatch
 import com.badlogic.gdx.graphics.g2d.TextureRegion
 import com.badlogic.gdx.math.Vector2
 import com.spacegame.Assets
@@ -28,7 +27,7 @@ class MinerRenderSystem : IteratingSystem() {
     private lateinit var batch: Batch
 
     override fun process(e: Int) {
-        val texture = TextureRegion(assetManager.get(Assets.MINER))
+        val texture = TextureRegion(assetManager.get(Assets.MINERAL_MINER))
         val ratio = texture.regionWidth / texture.regionHeight.toFloat()
         val width = sizeMapper.get(e).size
         val height = width * ratio

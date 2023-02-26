@@ -53,28 +53,36 @@ class ShopSystem : BaseSystem() {
         resources.minerals -= e.structure.price
 
         when (e.structure) {
-            Structure.MINER -> onPurchaseMiner()
-            Structure.SOLAR_STATION -> onPurchaseSolarStation()
-            Structure.SHIP_1 -> onPurchaseShip()
-            Structure.SHIP_2 -> onPurchaseShip()
-            Structure.SHIP_3 -> onPurchaseShip()
+            Structure.MINERAL_MINER -> placeMiner()
+            Structure.ENERGY_RELAY -> placeEnergyRelay()
+            Structure.SOLAR_STATION -> placeSolarStation()
+            Structure.REPAIR_STATION -> placeRepairStation()
+            Structure.MISSILE_LAUNCHER -> placeMissileLauncher()
+            Structure.LASER_CANNON -> placeLaserCannon()
+            Structure.BATTERY -> placeBattery()
         }
     }
 
-    private fun onPurchaseShip() {
-        resources.ships += 1
-    }
+    private fun placeBattery() { }
 
-    private fun onPurchaseMiner() {
+    private fun placeLaserCannon() { }
+
+    private fun placeMissileLauncher() { }
+
+    private fun placeRepairStation() { }
+
+    private fun placeEnergyRelay() { }
+
+    private fun placeMiner() {
         world.edit(world.create())
             .add(BeingPlaced())
             .add(Size())
             .add(Miner())
             .add(Range(75f))
-            .add(Texture(Assets.MINER))
+            .add(Texture(Assets.MINERAL_MINER))
     }
 
-    private fun onPurchaseSolarStation() {
+    private fun placeSolarStation() {
         world.edit(world.create())
             .add(BeingPlaced())
             .add(Size())
