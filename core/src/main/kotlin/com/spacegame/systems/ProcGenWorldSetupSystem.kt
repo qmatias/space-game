@@ -84,7 +84,7 @@ class ProcGenWorldSetupSystem(
     }
 
     private fun asteroidSize(x: Double, y: Double): Float {
-        return 3 * Random.nextFloat().pow(2) * 40
+        return max(40 * Random.nextFloat().pow(2), 5f)
     }
 
     private fun asteroidPos(): Vector2 {

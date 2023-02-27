@@ -13,9 +13,7 @@ import java.lang.Integer.min
 
 
 @All(Position::class, Connection::class)
-class ConnectionRenderSystem(
-    private val lineWidth: Float = 5f,
-) : IteratingSystem() {
+class ConnectionRenderSystem : IteratingSystem() {
     private lateinit var positionMapper: ComponentMapper<Position>
     private lateinit var asteroidMapper: ComponentMapper<Asteroid>
     private lateinit var minerMapper: ComponentMapper<Miner>
@@ -28,6 +26,8 @@ class ConnectionRenderSystem(
     private lateinit var shapeDrawer: ShapeDrawer
 
     private lateinit var camera: Camera
+
+    private val lineWidth: Float = 2f
 
     class ConnectionSet {
         val map = HashSet<Pair<Int, Int>>()

@@ -17,7 +17,7 @@ class Assets : AssetManager() {
             AssetDescriptor(path, T::class.java).also { allDescriptors.add(it) }
 
         val LOGO = add<Texture>("logo.png")
-        val ASTEROID = add<Texture>("spaceshooter/PNG/Meteors/meteorBrown_big1.png")
+        val ASTEROID = add<Texture>("midjourney/asteroid.png")
         val MINERAL_MINER = add<Texture>("midjourney/mineral-miner.png")
         val ENERGY_RELAY = add<Texture>("midjourney/energy-relay.png")
         val SOLAR_STATION = add<Texture>("midjourney/solar-station.png")

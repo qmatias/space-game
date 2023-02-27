@@ -4,21 +4,16 @@ import com.artemis.ComponentMapper
 import com.artemis.annotations.All
 import com.artemis.systems.IteratingSystem
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.math.Vector2
 import com.badlogic.gdx.math.Vector3
 import com.spacegame.components.*
 import com.spacegame.events.TouchUpEvent
-import com.spacegame.util.add
 import com.spacegame.util.iterator
-import com.spacegame.util.sequence
-import net.mostlyoriginal.api.component.Schedule
 import net.mostlyoriginal.api.event.common.Subscribe
 import net.mostlyoriginal.api.operation.OperationFactory.*
-import net.mostlyoriginal.api.utils.Duration.milliseconds
 
 @All(BeingPlaced::class)
-class MinerPlacementSystem : IteratingSystem() {
+class PlacementSystem : IteratingSystem() {
     private lateinit var positionMapper: ComponentMapper<Position>
 
     private lateinit var collisionSystem: CollisionSystem
@@ -42,10 +37,11 @@ class MinerPlacementSystem : IteratingSystem() {
         world.edit(e)
             .remove(BeingPlaced::class.java)
             .remove(ShowRange::class.java)
-            .add(Active())
+            .add(Construction())
+            .add(Health())
             .add(Selectable())
+            .add(Selected())
             .add(Collideable())
-            .add(Spinning())
     }
 
     override fun process(e: Int) {

@@ -32,13 +32,15 @@ class GameScreen(assetManager: Assets) : KtxScreen {
             .with(FlashSystem())
             .with(GeneratorSystem())
             .with(BatterySystem())
-            .with(SpinSelectedEntitySystem())
+//            .with(SpinSelectedEntitySystem())
+            .with(ConstructionSystem())
             .with(EntitySelectionSystem())
             .with(EntityClickSystem())
             .with(MinerConnectionSystem())
+            .with(ConstructionRenderSystem())
             .with(SolarStationConnectionSystem())
             .with(CameraPanZoomSystem())
-            .with(MinerPlacementSystem())
+            .with(PlacementSystem())
             .with(MiningSystem())
             .withRender()
             .withUI()
@@ -77,7 +79,7 @@ class GameScreen(assetManager: Assets) : KtxScreen {
     }
 
     override fun render(delta: Float) {
-        clearScreen(red = 0.7f, green = 0.7f, blue = 0.7f)
+        clearScreen(red = 0.0f, green = 0.0f, blue = 0.0f)
         world.setDelta(minOf(delta, MAX_DELTA));
         world.process()
     }

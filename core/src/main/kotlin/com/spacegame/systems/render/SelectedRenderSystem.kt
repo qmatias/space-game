@@ -14,11 +14,10 @@ import com.spacegame.util.getNullable
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 
-@All(Size::class, Position::class, Highlight::class)
-class HighlightRenderSystem : IteratingSystem() {
+@All(Size::class, Position::class, Selected::class)
+class SelectedRenderSystem : IteratingSystem() {
     private lateinit var positionMapper: ComponentMapper<Position>
     private lateinit var sizeMapper: ComponentMapper<Size>
-    private lateinit var highlightMapper: ComponentMapper<Highlight>
 
     @Wire
     private lateinit var shapeDrawer: ShapeDrawer
@@ -30,8 +29,15 @@ class HighlightRenderSystem : IteratingSystem() {
     override fun process(e: Int) {
         val position = positionMapper.get(e)
         val size = sizeMapper.get(e).size
-        val color = highlightMapper.get(e).color
-        shapeDrawer.rectangle(position.x - size / 2, position.y - size / 2, size, size, color, lineWidth)
+        val color = Color.WHITE
+        shapeDrawer.filledRectangle(
+            position.x - size / 2, position.y - lineWidth / 2,
+            size, lineWidth, color
+        )
+        shapeDrawer.filledRectangle(
+            position.x - lineWidth / 2, position.y - size / 2,
+            lineWidth, size, color
+        )
     }
 
     override fun begin() {

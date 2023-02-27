@@ -6,5 +6,5 @@ import com.badlogic.gdx.graphics.Texture
 import com.spacegame.Assets
 
 class Size(
-    var size: Float = 100f,
+    var size: Float = 50f,
 ) : Component()

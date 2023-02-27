@@ -63,15 +63,15 @@ class ShopSystem : BaseSystem() {
         }
     }
 
-    private fun placeBattery() { }
+    private fun placeBattery() {}
 
-    private fun placeLaserCannon() { }
+    private fun placeLaserCannon() {}
 
-    private fun placeMissileLauncher() { }
+    private fun placeMissileLauncher() {}
 
-    private fun placeRepairStation() { }
+    private fun placeRepairStation() {}
 
-    private fun placeEnergyRelay() { }
+    private fun placeEnergyRelay() {}
 
     private fun placeMiner() {
         world.edit(world.create())

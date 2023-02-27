@@ -2,9 +2,15 @@
 com.badlogic.gdx.graphics.g2d.BitmapFont: {
 	font: {
 		file: font-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
 	title: {
 		file: font-title-export.fnt
+		scaledSize: -1
+		markupEnabled: false
+		flip: false
 	}
 }
 com.badlogic.gdx.graphics.Color: {
@@ -110,6 +116,16 @@ com.badlogic.gdx.scenes.scene2d.ui.List$ListStyle: {
 		fontColorSelected: sky-blue
 		fontColorUnselected: white
 		selection: selection
+	}
+}
+com.badlogic.gdx.scenes.scene2d.ui.ProgressBar$ProgressBarStyle: {
+	default-horizontal: {
+		background: slider-back
+		knobBefore: slider
+	}
+	default-vertical: {
+		background: slider-back
+		knobBefore: slider-v
 	}
 }
 com.badlogic.gdx.scenes.scene2d.ui.ScrollPane$ScrollPaneStyle: {

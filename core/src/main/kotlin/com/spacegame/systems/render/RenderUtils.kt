@@ -9,10 +9,11 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion
 import space.earlygrey.shapedrawer.ShapeDrawer
 
 fun WorldConfigurationBuilder.withRender(): WorldConfigurationBuilder {
+    with(SelectedRenderSystem())
     with(ConnectionRenderSystem())
+    with(RangeRenderSystem())
     with(TextureRenderSystem())
     with(HighlightRenderSystem())
-    with(RangeRenderSystem())
     return this
 }
 

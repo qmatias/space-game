@@ -10,7 +10,6 @@ import com.spacegame.components.Selected
 import com.spacegame.components.Spinning
 
 @All(Spinning::class)
-@Exclude(Selected::class)
 class RotatorSystem : IteratingSystem() {
     private lateinit var spinningMapper: ComponentMapper<Spinning>
     private lateinit var rotationMapper: ComponentMapper<Rotation>
