@@ -8,14 +8,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.spacegame.Assets
 import com.spacegame.components.*
-import com.spacegame.systems.ConnectionManager
+import com.spacegame.systems.connections.AsteroidMinerConnectionSystem
 import com.spacegame.ui.ConstructionWidget
 import com.spacegame.ui.GameWindow
 import com.spacegame.ui.HealthWidget
 import com.spacegame.ui.UpdatingLabel
 import com.spacegame.util.getNullable
 
-@All(Miner::class, Selected::class)
+@All(MineralMiner::class, Selected::class)
 class MinerInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
     private lateinit var constructionWidget: ConstructionWidget
     private lateinit var healthWidget: HealthWidget
@@ -24,11 +24,12 @@ class MinerInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
     private lateinit var totalMinedLabel: UpdatingLabel
 
     private lateinit var asteroidMapper: ComponentMapper<Asteroid>
-    private lateinit var minerMapper: ComponentMapper<Miner>
+    private lateinit var asteroidMinerMapper: ComponentMapper<AsteroidMiner>
     private lateinit var constructionMapper: ComponentMapper<Construction>
     private lateinit var healthMapper: ComponentMapper<Health>
+    private lateinit var activeMapper: ComponentMapper<Active>
 
-    private lateinit var connectionManager: ConnectionManager
+    private lateinit var asteroidMinerConnectionSystem: AsteroidMinerConnectionSystem
 
     @Wire
     private lateinit var assetManager: Assets
@@ -51,7 +52,7 @@ class MinerInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
     }
 
     fun buildWindow() =
-        GameWindow("Miner Info", skin).apply {
+        GameWindow("Mineral Miner I", skin).apply {
             add(Table(skin).apply {
                 defaults().left().top().expand().fill().space(tableSpacing)
                 add(constructionWidget)
@@ -64,9 +65,13 @@ class MinerInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
         }
 
     override fun updateWindowFor(e: Int) {
-        val miner = minerMapper.get(e)
-        val asteroids = connectionManager.get(e).filter { asteroidMapper.has(it) }
-        val totalMps = asteroids.sumOf { asteroidMapper.get(it).mineralsPerSecond }
+        val miner = asteroidMinerMapper.get(e)
+        val asteroids = asteroidMinerConnectionSystem
+            .getShallowConnections(e)
+            .filter { activeMapper.has(it) }
+            .filter { asteroidMapper.has(it) }
+        val totalMps = asteroids
+            .sumOf { asteroidMapper.get(it).mineralsPerSecond }
         val progress = constructionMapper.getNullable(e)?.progress ?: 1f
         val health = healthMapper.getNullable(e)
 
@@ -79,6 +84,7 @@ class MinerInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
 
     override fun clearWindow() {
         constructionWidget.update()
+        healthWidget.update()
         asteroidCountLabel.update()
         mpsLabel.update()
         totalMinedLabel.update()

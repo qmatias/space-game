@@ -3,55 +3,74 @@ package com.spacegame.systems.ui
 import com.artemis.ComponentMapper
 import com.artemis.annotations.All
 import com.artemis.annotations.Wire
+import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.Skin
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.spacegame.Assets
 import com.spacegame.components.*
-import com.spacegame.systems.ConnectionManager
-import com.spacegame.ui.GameWindow
-import com.spacegame.ui.UpdatingLabel
+import com.spacegame.ui.*
 import com.spacegame.util.getNullable
 
 @All(SolarStation::class, Selected::class)
-class SolarStationInfoWindowSystemSystem(
-    private val tablePadding: Float = 10f,
-) : SingleEntityInfoWindowSystem() {
-    private lateinit var energyLabel: UpdatingLabel
-    private lateinit var capacityLabel: UpdatingLabel
-    private lateinit var energyPerSecondLabel: UpdatingLabel
+class SolarStationInfoWindowSystemSystem : SingleEntityInfoWindowSystem() {
+    private lateinit var constructionWidget: ConstructionWidget
+    private lateinit var healthWidget: HealthWidget
+    private lateinit var batteryWidget: BatteryWidget
+    private lateinit var energyProducedLabel: UpdatingLabel
 
-    private lateinit var generatorMapper: ComponentMapper<Generator>
-    private lateinit var batteryMapper: ComponentMapper<Battery>
-
-    private lateinit var connectionManager: ConnectionManager
+    private lateinit var constructionMapper: ComponentMapper<Construction>
+    private lateinit var healthMapper: ComponentMapper<Health>
+    private lateinit var energyGeneratorMapper: ComponentMapper<EnergyGenerator>
+    private lateinit var energyStorerMapper: ComponentMapper<EnergyStorer>
 
     @Wire
     private lateinit var assetManager: Assets
 
+    private lateinit var skin: Skin
+
+    private val tablePadding: Float = 10f
+    private val tableSpacing: Float = 20f
+
     override fun initialize() {
-        val skin = assetManager.get(Assets.UI_SKIN)
+        skin = assetManager.get(Assets.UI_SKIN)
 
-        window = GameWindow("Miner Info", skin)
+        constructionWidget = ConstructionWidget(skin)
+        healthWidget = HealthWidget(skin)
+        batteryWidget = BatteryWidget(skin)
+        energyProducedLabel = UpdatingLabel("Energy Produced: {}", skin)
 
-        capacityLabel = UpdatingLabel("Energy: {} / {}", skin)
-        energyPerSecondLabel = UpdatingLabel("Energy Production: {}", skin)
-
-        val inner = Table()
-        inner.top().defaults().left().expandX().fill()
-        inner.add(capacityLabel).row()
-        inner.add(energyPerSecondLabel).row()
-        window.add(inner).pad(tablePadding).left().expand().fill()
+        window = buildWindow()
     }
 
-    override fun updateWindowFor(e: Int) {
-        val generator = generatorMapper.getNullable(e)
-        val battery = batteryMapper.getNullable(e)
+    fun buildWindow() =
+        GameWindow("Solar Station I", skin).apply {
+            add(Table(skin).apply {
+                defaults().left().top().expand().fill().space(tableSpacing)
+                add(constructionWidget)
+                add(Label("Solar Station", skin)).row()
+                add(healthWidget)
+                add(energyProducedLabel).row()
+                add(batteryWidget)
+                add(Label("Solar Station", skin)).row()
+            }).pad(tablePadding).expand().fill()
+        }
 
-        capacityLabel.update(battery?.energy ?: 0, battery?.capacity ?: 0)
-        energyPerSecondLabel.update(generator?.energyPerSecond ?: 0)
+    override fun updateWindowFor(e: Int) {
+        val progress = constructionMapper.getNullable(e)?.progress ?: 1f
+        val health = healthMapper.getNullable(e)
+        val battery = energyStorerMapper.getNullable(e)
+        val energyProduced = energyGeneratorMapper.getNullable(e)?.energyProduced ?: 0f
+
+        constructionWidget.update(progress)
+        healthWidget.update(health)
+        batteryWidget.update(battery)
+        energyProducedLabel.update(energyProduced)
     }
 
     override fun clearWindow() {
-        capacityLabel.update()
-        energyPerSecondLabel.update()
+        constructionWidget.update()
+        healthWidget.update()
+        batteryWidget.update()
+        energyProducedLabel.update()
     }
 }

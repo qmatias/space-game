@@ -15,7 +15,7 @@ fun <T : Component> ComponentMapper<T>.getNullable(e: Int): T? {
 fun <T : Component> ComponentMapper<T>.toggle(e: Int): T? =
     set(e, !has(e))
 
-fun <T : Component> ComponentMapper<T>.add(e: Int): T? =
+fun <T : Component> ComponentMapper<T>.addConnection(e: Int): T? =
     set(e, true)
 
 fun IntBag.toList(): List<Int> = data.toList().subList(0, size())

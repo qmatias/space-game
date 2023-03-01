@@ -17,7 +17,7 @@ class HealthWidget(skin: Skin) : Table(skin) {
         add(bar).row()
     }
 
-    fun update(health: Health?) {
+    fun update(health: Health? = null) {
         if (health == null) {
             isVisible = false
             return

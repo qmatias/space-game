@@ -4,14 +4,15 @@ import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.IntervalIteratingSystem
 import com.spacegame.components.*
+import com.spacegame.systems.connections.AsteroidMinerConnectionSystem
 import com.spacegame.util.getNullable
 
-class MiningSystem : IntervalIteratingSystem(Aspect.all(Miner::class.java, Active::class.java), 1f) {
+class MiningSystem : IntervalIteratingSystem(Aspect.all(AsteroidMiner::class.java, Active::class.java), 1f) {
     private lateinit var asteroidMapper: ComponentMapper<Asteroid>
-    private lateinit var minerMapper: ComponentMapper<Miner>
+    private lateinit var asteroidMinerMapper: ComponentMapper<AsteroidMiner>
     private lateinit var activeMapper: ComponentMapper<Active>
 
-    private lateinit var connectionManager: ConnectionManager
+    private lateinit var asteroidMinerConnectionSystem: AsteroidMinerConnectionSystem
 
     private lateinit var resources: Resources
 
@@ -28,11 +29,12 @@ class MiningSystem : IntervalIteratingSystem(Aspect.all(Miner::class.java, Activ
 
     override fun process(e: Int) {
         // total sum of all connected asteroid mineralsPerSeconds's
-        val totalMinerals = connectionManager.get(e)
+        val totalMinerals = asteroidMinerConnectionSystem
+            .getShallowConnections(e)
             .filter { activeMapper.has(it) }
             .sumOf { asteroidMapper.getNullable(it)?.mineralsPerSecond ?: 0 }
 
-        val miner = minerMapper.get(e)
+        val miner = asteroidMinerMapper.get(e)
         miner.mineralsMined += totalMinerals
 
         mineralsPerSecond += totalMinerals

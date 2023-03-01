@@ -22,5 +22,8 @@ class ConstructionSystem : IteratingSystem() {
         if (construction.progress >= 1f) {
             constructionMapper.remove(e)
         }
+
+        // tmp
+        constructionMapper.remove(e)
     }
 }

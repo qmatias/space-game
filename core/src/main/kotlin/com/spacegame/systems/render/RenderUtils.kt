@@ -10,7 +10,8 @@ import space.earlygrey.shapedrawer.ShapeDrawer
 
 fun WorldConfigurationBuilder.withRender(): WorldConfigurationBuilder {
     with(SelectedRenderSystem())
-    with(ConnectionRenderSystem())
+    with(MinerConnectionRenderSystem())
+    with(EnergyConnectionRenderSystem())
     with(RangeRenderSystem())
     with(TextureRenderSystem())
     with(HighlightRenderSystem())

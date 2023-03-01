@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.spacegame.events.*
 import com.spacegame.systems.*
+import com.spacegame.systems.connections.withConnections
 import com.spacegame.systems.render.*
 import com.spacegame.systems.ui.*
 import ktx.app.KtxScreen
@@ -25,7 +26,6 @@ class GameScreen(assetManager: Assets) : KtxScreen {
             .with(SingletonPlugin())
             .with(EventSystem())
             .with(InputSystem())
-            .with(ConnectionManager())
             .with(CollisionSystem())
             .with(ShopSystem())
             .with(RotatorSystem())
@@ -36,12 +36,11 @@ class GameScreen(assetManager: Assets) : KtxScreen {
             .with(ConstructionSystem())
             .with(EntitySelectionSystem())
             .with(EntityClickSystem())
-            .with(MinerConnectionSystem())
             .with(ConstructionRenderSystem())
-            .with(SolarStationConnectionSystem())
             .with(CameraPanZoomSystem())
             .with(PlacementSystem())
             .with(MiningSystem())
+            .withConnections()
             .withRender()
             .withUI()
             .with(ProcGenWorldSetupSystem())

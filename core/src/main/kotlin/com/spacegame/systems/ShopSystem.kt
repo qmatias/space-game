@@ -63,7 +63,14 @@ class ShopSystem : BaseSystem() {
         }
     }
 
-    private fun placeBattery() {}
+    private fun placeBattery() {
+        world.edit(world.create())
+            .add(BeingPlaced())
+            .add(Size())
+            .add(Battery())
+            .add(EnergyStorer())
+            .add(Texture(Assets.BATTERY))
+    }
 
     private fun placeLaserCannon() {}
 
@@ -71,13 +78,22 @@ class ShopSystem : BaseSystem() {
 
     private fun placeRepairStation() {}
 
-    private fun placeEnergyRelay() {}
+    private fun placeEnergyRelay() {
+        world.edit(world.create())
+            .add(BeingPlaced())
+            .add(Size())
+            .add(Powerline())
+            .add(Range(200f))
+            .add(Texture(Assets.ENERGY_RELAY))
+    }
 
     private fun placeMiner() {
         world.edit(world.create())
             .add(BeingPlaced())
             .add(Size())
-            .add(Miner())
+            .add(EnergyConsumer())
+            .add(MineralMiner())
+            .add(AsteroidMiner())
             .add(Range(75f))
             .add(Texture(Assets.MINERAL_MINER))
     }
@@ -86,9 +102,10 @@ class ShopSystem : BaseSystem() {
         world.edit(world.create())
             .add(BeingPlaced())
             .add(Size())
+            .add(Powerline())
             .add(SolarStation())
-            .add(Generator())
-            .add(Battery())
+            .add(EnergyGenerator())
+            .add(EnergyStorer())
             .add(Range(200f))
             .add(Texture(Assets.SOLAR_STATION))
     }

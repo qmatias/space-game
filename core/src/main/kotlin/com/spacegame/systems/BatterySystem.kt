@@ -6,7 +6,6 @@ import com.artemis.systems.IntervalIteratingSystem
 import com.spacegame.components.*
 
 class BatterySystem : IntervalIteratingSystem(Aspect.all(Battery::class.java, Active::class.java), 1f) {
-    private lateinit var connectionManager: ConnectionManager
     private lateinit var batteryMapper: ComponentMapper<Battery>
 
     var totalEnergyStored = 0

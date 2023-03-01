@@ -4,12 +4,14 @@ import com.artemis.Aspect
 import com.artemis.ComponentMapper
 import com.artemis.systems.IntervalIteratingSystem
 import com.spacegame.components.*
+import com.spacegame.systems.connections.EnergyConnectionSystem
 
-class GeneratorSystem : IntervalIteratingSystem(Aspect.all(Generator::class.java, Active::class.java), 1f) {
-    private lateinit var connectionManager: ConnectionManager
+class GeneratorSystem : IntervalIteratingSystem(Aspect.all(EnergyGenerator::class.java, Active::class.java), 1f) {
     private lateinit var activeMapper: ComponentMapper<Active>
     private lateinit var batteryMapper: ComponentMapper<Battery>
-    private lateinit var generatorMapper: ComponentMapper<Generator>
+    private lateinit var energyGeneratorMapper: ComponentMapper<EnergyGenerator>
+
+    private lateinit var energyConnectionSystem: EnergyConnectionSystem
 
     var maxEnergyProduction = 0
         private set
@@ -23,7 +25,7 @@ class GeneratorSystem : IntervalIteratingSystem(Aspect.all(Generator::class.java
     }
 
     override fun process(e: Int) {
-        var energy = generatorMapper.get(e).energyPerSecond
+        var energy = energyGeneratorMapper.get(e).energyPerSecond
         maxEnergyProduction += energy
 
         val batteries = getConnectedBatteries(e).toMutableList()
@@ -41,8 +43,9 @@ class GeneratorSystem : IntervalIteratingSystem(Aspect.all(Generator::class.java
     }
 
     private fun getConnectedBatteries(e: Int): List<Int> {
-        val batteries = connectionManager.get(e)
-            .filter { activeMapper.has(it) && batteryMapper.has(it) }
+        val batteries = energyConnectionSystem.getRecursiveConnections(e)
+            .filter { activeMapper.has(it) }
+            .filter { batteryMapper.has(it) }
             .sortedBy { batteryMapper.get(it).capacity } // fill the lowest capacity batteries first
             .toMutableList()
 

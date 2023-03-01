@@ -17,6 +17,7 @@ class ShopWindowSystem : BaseSystem() {
     private val itemSize: Float = 130f
     private val buttonSpacing: Float = 10f
     private val tablePadding: Float = 15f
+    private val labelPadding: Float = 5f
 
     lateinit var window: Table
 
@@ -29,7 +30,7 @@ class ShopWindowSystem : BaseSystem() {
     private lateinit var shopSectionCell: Cell<Table>
 
     private var sectionIdx = 0
-    private val sectionSize = 4
+    private val sectionSize = 3
     private val sections = Structure.values().toList().chunked(sectionSize)
 
     override fun initialize() {
@@ -65,7 +66,7 @@ class ShopWindowSystem : BaseSystem() {
 
     fun buildShopSection(): Table =
         Table(skin).apply {
-            row().width(itemSize).height(itemSize).expand()
+            row().size(itemSize).expand().uniform()
             sections[sectionIdx].forEach { structure ->
                 add(buildStructureContainer(structure))
             }
@@ -73,12 +74,15 @@ class ShopWindowSystem : BaseSystem() {
 
     fun buildStructureContainer(structure: Structure) =
         Table(skin).apply {
-            val texture = assetManager.get(structure.icon)
-            add(Image(texture).apply {
-                setScaling(Scaling.contain)
-                onClick { eventSystem.dispatch(PurchaseStructureEvent(structure)) }
-            }).fill().expand().pad(iconPadding)
-            setBackground("progress-bar-back")
+            add(Table(skin).apply {
+                val texture = assetManager.get(structure.icon)
+                add(Image(texture).apply {
+                    setScaling(Scaling.contain)
+                    onClick { eventSystem.dispatch(PurchaseStructureEvent(structure)) }
+                }).pad(iconPadding).grow()
+                setBackground("progress-bar-back")
+            }).size(itemSize).row()
+            add(Label(structure.prettyName, skin)).expand().center().padTop(labelPadding)
         }
 
     override fun processSystem() {}
